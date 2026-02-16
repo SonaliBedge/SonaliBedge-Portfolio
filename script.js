@@ -66,3 +66,55 @@ function setActiveNav() {
 
 window.addEventListener('scroll', setActiveNav);
 setActiveNav();
+
+// ─── Animated counter for hero metrics ───
+function animateCounters() {
+  const metrics = document.querySelectorAll('.metric-value');
+  
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = 'true';
+        const text = entry.target.textContent.trim();
+        
+        // Parse the number and suffix (e.g., "60K+" → 60, "K+")
+        const match = text.match(/^([\d.]+)(.*)$/);
+        if (!match) return;
+        
+        const target = parseFloat(match[1]);
+        const suffix = match[2]; // e.g., "K+", "+", "%+"
+        const isDecimal = text.includes('.');
+        const duration = 1500; // ms
+        const startTime = performance.now();
+        
+        function updateCount(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          // Ease-out curve for smooth deceleration
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * target;
+          
+          if (isDecimal) {
+            entry.target.textContent = current.toFixed(1) + suffix;
+          } else {
+            entry.target.textContent = Math.floor(current) + suffix;
+          }
+          
+          if (progress < 1) {
+            requestAnimationFrame(updateCount);
+          } else {
+            entry.target.textContent = text; // ensure exact final value
+            entry.target.classList.add('counted');
+          }
+        }
+        
+        requestAnimationFrame(updateCount);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  metrics.forEach(el => counterObserver.observe(el));
+}
+
+animateCounters();
