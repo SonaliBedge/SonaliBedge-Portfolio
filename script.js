@@ -35,3 +35,34 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// ─── Active nav link on scroll (scroll spy) ───
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-links a[href^="#"]');
+
+function setActiveNav() {
+  const scrollY = window.scrollY + 120; // offset for fixed navbar
+
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const sectionId = section.getAttribute('id');
+
+    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+      navItems.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + sectionId) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+
+  // Remove active state when at very top (hero section)
+  if (window.scrollY < 200) {
+    navItems.forEach(link => link.classList.remove('active'));
+  }
+}
+
+window.addEventListener('scroll', setActiveNav);
+setActiveNav();
