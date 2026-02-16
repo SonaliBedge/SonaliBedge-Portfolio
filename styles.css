@@ -541,6 +541,39 @@
     display: flex; align-items: center; justify-content: center;
   }
 
+  /* ─── Tooltip ─── */
+  .tooltip {
+    position: relative;
+    color: var(--accent);
+    font-weight: 600;
+    cursor: help;
+    border-bottom: 1px dashed var(--accent);
+  }
+  .tooltip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-hover);
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+  }
+  .tooltip:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
   /* ─── Footer ─── */
   footer {
     padding: 2.5rem 2rem;
