@@ -508,6 +508,13 @@
     font-size: 0.72rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.05em;
     margin-bottom: 0.75rem;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s;
+  }
+  a.cert-badge:hover {
+    background: var(--accent); color: var(--bg-primary);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(108, 155, 255, 0.3);
   }
 
   /* ─── Contact ─── */
